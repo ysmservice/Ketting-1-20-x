@@ -1,0 +1,2 @@
+cd Geyser
+./gradlew build

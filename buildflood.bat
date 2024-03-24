@@ -1,0 +1,2 @@
+cd Floodgate
+./gradlew build

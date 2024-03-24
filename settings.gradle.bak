@@ -1,0 +1,239 @@
+import org.gradle.internal.os.OperatingSystem
+
+pluginManagement {
+    repositories {
+        maven { url = 'https://nexus.c0d3m4513r.com/repository/Magma/' }
+        //Everything below is not required, but kept for redundancy
+        gradlePluginPortal()
+        maven { url = 'https://maven.minecraftforge.net/' }
+    }
+}
+
+buildscript {
+    dependencies {
+        classpath('com.google.code.gson:gson') {
+            version {
+                strictly '2.10.1'
+            }
+        }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
+}
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            library('forgespi', 'net.minecraftforge:forgespi:7.1.3') // Needs modlauncher
+            library('modlauncher', 'net.minecraftforge:modlauncher:10.1.2') // Needs securemodules
+            library('securemodules', 'net.minecraftforge:securemodules:2.2.10') // Needs unsafe
+            library('unsafe', 'net.minecraftforge:unsafe:0.9.2')
+            library('accesstransformers', 'net.minecraftforge:accesstransformers:8.1.1')
+            library('antlr-runtime', 'org.antlr:antlr4-runtime:4.9.1') // Needed by Access Transformer because parsing a simple text file was too complicated
+            library('coremods', 'net.minecraftforge:coremods:5.1.0')
+            library('nashorn', 'org.openjdk.nashorn:nashorn-core:15.3') // Needed by coremods, because the JRE no longer ships JS
+            library('eventbus', 'net.minecraftforge:eventbus:6.2.0')
+            library('typetools', 'net.jodah:typetools:0.6.3') // Needed by EventBus because of lambdas
+            library('mergetool-api', 'net.minecraftforge:mergetool-api:1.0')
+
+            library('mixin', 'org.spongepowered:mixin:0.8.5')
+            library('nulls', 'org.jetbrains:annotations:23.0.0') // Got to have our null annotations!
+            //library('slf4j-api', 'org.slf4j:slf4j-api:2.0.7') //Kettting - let's use the version, that mojang uses
+            library('maven-artifact', 'org.apache.maven:maven-artifact:3.8.5')
+
+            // Google's InMemory File System. Used by ForgeDev Tests for now, but could be useful for a lot of things.
+            library('jimfs', 'com.google.jimfs:jimfs:1.3.0')
+            bundle('jimfs', ['guava', 'failureaccess'])
+            
+            version('bootstrap', '2.1.0')
+            library('bootstrap',      'net.minecraftforge', 'bootstrap'     ).versionRef('bootstrap') // Needs modlauncher
+            library('bootstrap-api',  'net.minecraftforge', 'bootstrap-api' ).versionRef('bootstrap')
+            library('bootstrap-dev',  'net.minecraftforge', 'bootstrap-dev' ).versionRef('bootstrap')
+            library('bootstrap-shim', 'net.minecraftforge', 'bootstrap-shim').versionRef('bootstrap')
+
+            // ASM it's used for so many of our hacks
+            version('asm', '9.6')
+            library('asm',          'org.ow2.asm', 'asm'         ).versionRef('asm')
+            library('asm-tree',     'org.ow2.asm', 'asm-tree'    ).versionRef('asm')
+            library('asm-util',     'org.ow2.asm', 'asm-util'    ).versionRef('asm')
+            library('asm-commons',  'org.ow2.asm', 'asm-commons' ).versionRef('asm')
+            library('asm-analysis', 'org.ow2.asm', 'asm-analysis').versionRef('asm')
+            bundle('asm', ['asm', 'asm-tree', 'asm-util', 'asm-commons', 'asm-analysis'])
+            
+            // The core of our configuration system, it has many flaws, but it works for the most part
+            version('night-config', '3.6.4')
+            library('night-config-toml', 'com.electronwill.night-config', 'toml').versionRef('night-config')
+            library('night-config-core', 'com.electronwill.night-config', 'core').versionRef('night-config')
+            bundle('night-config', ['night-config-toml', 'night-config-core'])
+
+            // Jar in Jar FileSystem
+            version('jarjar', '0.3.26')
+            library('jarjar-fs',       'net.minecraftforge', 'JarJarFileSystems').versionRef('jarjar')
+            library('jarjar-meta',     'net.minecraftforge', 'JarJarMetadata'   ).versionRef('jarjar')
+            library('jarjar-selector', 'net.minecraftforge', 'JarJarSelector'   ).versionRef('jarjar')
+            bundle('jarjar', ['jarjar-fs', 'jarjar-selector', 'jarjar-meta'])
+
+            //Ketting start - Ketting libs
+            library('kettingcore',         'org.kettingpowered', 'kettingcore').version('1.3')
+            library('kettingcommon',   'org.kettingpowered', 'kettingcommon').version('2.3.2')
+            library('kettinglauncher', 'org.kettingpowered', 'kettinglauncher').version('1.3.3')
+            library('terminalcolors',  'org.kettingpowered', 'terminal-colors').version('1.0.2')
+
+            version('snakeyaml', '2.2')
+            library('yaml', 'org.yaml', 'snakeyaml').versionRef('snakeyaml')
+
+            version('log4j', '2.19.0')
+            library('log4j-io', 'org.apache.logging.log4j', 'log4j-iostreams').versionRef('log4j')
+
+            library('bungeecord-chat', 'net.md-5:bungeecord-chat:1.20-R0.1')
+
+            library('apache-commons2', 'commons-lang:commons-lang:2.6')
+            library('json-simple', 'com.googlecode.json-simple:json-simple:1.1.1')
+            library('sqlite-jdbc', 'org.xerial:sqlite-jdbc:3.44.1.0')
+            library('mysql-connector-j', 'com.mysql:mysql-connector-j:8.2.0')
+
+            library('tools', 'io.izzel', 'tools').version('1.3.0')
+
+            library('specialsource', 'net.md-5', 'SpecialSource').version('1.11.3')
+
+            library('inject', 'javax.inject', 'javax.inject').version('1')
+
+            bundle('bukkitlibs', [
+                    'inject',
+                    'yaml',
+                    'tools',
+                    'specialsource',
+                    'log4j-io',
+                    'bungeecord-chat',
+                    'apache-commons2',
+                    'json-simple',
+                    'sqlite-jdbc',
+                    'mysql-connector-j'
+            ])
+            //Ketting end - Ketting libs
+
+            // These are libraries shipped by the MC launcher, try and keep them in sync with the manifest
+            // but honestly if we don't it just means we ship them as normal libraries by adding them to the installer config in the forge project
+            //as listed in https://piston-meta.mojang.com/v1/packages/12888726d2cc035d30965bcf8c825c7ac5f28ea0/1.20.2.json ,except os specific libs
+            //(the link is from https://launchermeta.mojang.com/mc/game/version_manifest.json)
+            library('oshi','com.github.oshi:oshi-core:6.4.5')
+            library('gson', 'com.google.code.gson:gson:2.10.1')
+            library('failureaccess', 'com.google.guava:failureaccess:1.0.1')
+            library('guava', 'com.google.guava:guava:32.1.2-jre')
+            library('ibm-icu4j', 'com.ibm.icu:icu4j:73.2')
+            library('mojang-authlib', 'com.mojang:authlib:6.0.52')
+            library('mojang-blacklist', 'com.mojang:blocklist:1.0.10')
+//            library('mojang-brigadier', 'com.mojang:brigadier:1.2.9') //Ketting - We have our own brigadier
+            library('mojang-dfu', 'com.mojang:datafixerupper:6.0.8')
+            library('mojang-logging', 'com.mojang:logging:1.1.1')
+            library('mojang-patchy', 'com.mojang:patchy:2.2.10')
+            library('mojang-text2speech', 'com.mojang:text2speech:1.17.9')
+            library('commons-codec','commons-codec:commons-codec:1.16.0')
+            library('commons-io', 'commons-io:commons-io:2.13.0')
+            library('commons-logging', 'commons-logging:commons-logging:1.2')
+            library('netty-buffer', 'io.netty:netty-buffer:4.1.97.Final')
+            library('netty-codec', 'io.netty:netty-codec:4.1.97.Final')
+            library('netty-common', 'io.netty:netty-common:4.1.97.Final')
+            library('netty-handler', 'io.netty:netty-handler:4.1.97.Final')
+            library('netty-resolver', 'io.netty:netty-resolver:4.1.97.Final')
+            library('netty-transport-classes-epoll', 'io.netty:netty-transport-classes-epoll:4.1.97.Final')
+            library('nettyTransportEpoll', 'io.netty:netty-transport-native-epoll:4.1.97.Final')
+            library('netty-transport-native-unix-common', 'io.netty:netty-transport-native-unix-common:4.1.97.Final')
+            library('netty-transport', 'io.netty:netty-transport:4.1.97.Final')
+            library('fastutil', 'it.unimi.dsi:fastutil:8.5.12')
+            library('jna-platform', 'net.java.dev.jna:jna-platform:5.13.0')
+            library('jna', 'net.java.dev.jna:jna:5.13.0')
+            library('jopt-simple', 'net.sf.jopt-simple:jopt-simple:5.0.4')
+            library('apache-commons-compress', 'org.apache.commons:commons-compress:1.22')
+            library('apache-commons', 'org.apache.commons:commons-lang3:3.13.0')
+            library('apache-httpclient', 'org.apache.httpcomponents:httpclient:4.5.13')
+            library('apache-httpcore', 'org.apache.httpcomponents:httpcore:4.4.16')
+            library('log4j-api',  'org.apache.logging.log4j', 'log4j-api' ).versionRef('log4j')
+            library('log4j-core', 'org.apache.logging.log4j', 'log4j-core').versionRef('log4j')
+            library('log4j-slf4j2-impl', 'org.apache.logging.log4j', 'log4j-slf4j2-impl').versionRef('log4j')
+            library('joml', 'org.joml:joml:1.10.5')
+
+            version('lwjgl', '3.3.2')
+            library('lwjgl-glfw', 'org.lwjgl','lwjgl-glfw').versionRef('lwjgl')
+            library('lwjgl-jemalloc', 'org.lwjgl','lwjgl-jemalloc').versionRef('lwjgl')
+            library('lwjgl-openal', 'org.lwjgl','lwjgl-openal').versionRef('lwjgl')
+            library('lwjgl-opengl', 'org.lwjgl','lwjgl-opengl').versionRef('lwjgl')
+            library('lwjgl-stb', 'org.lwjgl','lwjgl-stb').versionRef('lwjgl')
+            library('lwjgl-tinyfd', 'org.lwjgl','lwjgl-tinyfd').versionRef('lwjgl')
+            library('lwjgl', 'org.lwjgl','lwjgl').versionRef('lwjgl')
+            library('slf4j-api', 'org.slf4j:slf4j-api:2.0.7')
+
+
+            // Ketting add all missing libraries
+            bundle('launcher', [
+                    'oshi',
+                    'gson',
+                    'failureaccess',
+                    'guava',
+                    'ibm-icu4j',
+                    'mojang-authlib',
+                    'mojang-blacklist',
+                    'mojang-dfu',
+                    'mojang-logging',
+                    'mojang-patchy',
+                    'mojang-text2speech',
+                    'commons-codec',
+                    'commons-io',
+                    'commons-logging',
+                    'netty-buffer',
+                    'netty-codec',
+                    'netty-common',
+                    'netty-handler',
+                    'netty-resolver',
+                    'netty-transport-classes-epoll',
+                    'netty-transport-native-unix-common',
+                    'netty-transport',
+                    'fastutil',
+                    'jna-platform',
+                    'jna',
+                    'jopt-simple',
+                    'apache-commons-compress',
+                    'apache-commons',
+                    'apache-httpclient',
+                    'apache-httpcore',
+                    'log4j-api',
+                    'log4j-core',
+                    'log4j-slf4j2-impl',
+                    'joml',
+                    'lwjgl-glfw',
+                    'lwjgl-jemalloc',
+                    'lwjgl-openal',
+                    'lwjgl-opengl',
+                    'lwjgl-stb',
+                    'lwjgl-tinyfd',
+                    'lwjgl',
+                    'slf4j-api'
+            ])
+
+            bundle('lwjgl', ['lwjgl', 'lwjgl-glfw', 'lwjgl-opengl', 'lwjgl-stb', 'lwjgl-tinyfd'])
+        }
+    }
+}
+
+rootProject.name = 'Ketting-1-20-x'
+
+include 'fmlloader'
+include 'fmlcore'
+include 'mclanguage'
+include 'javafmllanguage'
+include 'lowcodelanguage'
+
+include ':mcp'
+project(":mcp").projectDir = file("projects/mcp")
+
+include ':forge'
+project(":forge").projectDir = file("projects/ketting")
+project(':forge').buildFileName = '../../build_forge.gradle'
+
+if (!System.env.TEAMCITY_VERSION) {
+    include ':clean'
+    project(':clean').projectDir = file('projects/clean')
+    project(':clean').buildFileName = '../../build_clean.gradle'
+}

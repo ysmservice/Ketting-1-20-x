@@ -1,0 +1,6 @@
+[submodule "Geyser"]
+	path = Geyser
+	url = https://github.com/ysmservice/Geyser.git
+[submodule "Floodgate"]
+	path = Floodgate
+	url = https://github.com/ysmservice/Floodgate.git
