@@ -15,7 +15,8 @@ license="LGPL v2.1"
     description='''
     Forge, a broad compatibility API.
     '''
-
+[[mixins]]
+config = "forge.mixins.json"
 [[mods]]
     modId="geyser_neoforge"
     version="1.20.4"
