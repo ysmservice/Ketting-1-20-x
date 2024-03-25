@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.function.Function;
 
-import org.geysermc.floodgate.ForgeMod;
+import org.geysermc.floodgate.ForgeFloodgate;
 import org.geysermc.floodgate.MinecraftServerHolder;
 import org.geysermc.floodgate.platform.command.CommandUtil;
 import org.geysermc.floodgate.player.FloodgateCommandPreprocessor;
@@ -34,7 +34,7 @@ import org.geysermc.floodgate.util.ForgeCommandUtil;
 public final class ForgeCommandModule extends CommandModule {
     private CommandDispatcher<CommandSource> dispatcher1 = new CommandDispatcher<>();
     public static ForgeCommandUtil cmdutil = new ForgeCommandUtil(null, MinecraftServerHolder.get(), null);
-    private final ForgeMod plugin;
+    private final ForgeFloodgate plugin;
     
     @Override
     protected void configure() {
@@ -55,7 +55,7 @@ public final class ForgeCommandModule extends CommandModule {
         return commandManager;
     }
     
-    public ForgeCommandModule(ForgeMod f) {
+    public ForgeCommandModule(ForgeFloodgate f) {
     	plugin = f;
         MinecraftForge.EVENT_BUS.register(this);
     }

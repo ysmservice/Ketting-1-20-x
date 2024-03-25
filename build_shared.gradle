@@ -19,6 +19,7 @@ repositories {
     maven gradleutils.forgeMaven
     maven gradleutils.minecraftLibsMaven
     //mavenLocal()
+    maven { url = 'https://repo.opencollab.dev/maven-releases'}
 }
 
 tasks.withType(Javadoc).configureEach {

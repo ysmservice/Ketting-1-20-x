@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.commands.CommandSource;
 import java.util.logging.Logger;
-import org.geysermc.floodgate.ForgeMod;
+import org.geysermc.floodgate.ForgeFloodgate;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import org.geysermc.floodgate.inject.CommonPlatformInjector;
@@ -33,13 +33,13 @@ import org.geysermc.floodgate.listener.ForgeEventRegistration;
 
 @RequiredArgsConstructor
 public final class ForgePlatformModule extends AbstractModule {
-	private final ForgeMod plugin;
+	private final ForgeFloodgate plugin;
     @Override
     protected void configure() {
-        bind(ForgeMod.class).toInstance(plugin);
+        bind(ForgeFloodgate.class).toInstance(plugin);
         bind(PlatformUtils.class).to(ForgePlatformUtils.class);
         bind(CommonPlatformInjector.class).to(ForgeInjector.class);
-        bind(Logger.class).annotatedWith(Names.named("logger")).toInstance(ForgeMod.getLogger());
+        bind(Logger.class).annotatedWith(Names.named("logger")).toInstance(ForgeFloodgate.getLogger());
         bind(FloodgateLogger.class).to(JavaUtilFloodgateLogger.class);
         try {
         bind(SkinApplier.class).to(ForgeSkinApplier.class);

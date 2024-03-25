@@ -123,6 +123,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import org.geysermc.geyser.platform.neoforge.GeyserNeoForgeBootstrap;
+import org.geysermc.floodgate.ForgeFloodgate;
 
 @Mod("forge")
 public class ForgeMod {

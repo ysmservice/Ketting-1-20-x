@@ -11,7 +11,7 @@ import cloud.commandframework.meta.SimpleCommandMeta;
 import lombok.NonNull;
 
 import org.bukkit.command.CommandSender;
-import org.geysermc.floodgate.ForgeMod;
+import org.geysermc.floodgate.ForgeFloodgate;
 import org.geysermc.floodgate.player.UserAudience;
 
 import java.util.function.Function;
@@ -25,7 +25,7 @@ public class CommandManagerImpl extends CommandManager<UserAudience> {
     }
 
 
-	public CommandManagerImpl(ForgeMod owningPlugin, Function<CommandTree<UserAudience>, CommandExecutionCoordinator<UserAudience>> commandExecutionCoordinator, Function<CommandSender, UserAudience> commandSenderMapper, Function<UserAudience, CommandSender> backwardsCommandSenderMapper) throws Exception {
+	public CommandManagerImpl(ForgeFloodgate owningPlugin, Function<CommandTree<UserAudience>, CommandExecutionCoordinator<UserAudience>> commandExecutionCoordinator, Function<CommandSender, UserAudience> commandSenderMapper, Function<UserAudience, CommandSender> backwardsCommandSenderMapper) throws Exception {
 		// TODO Auto-generated constructor stub
 		super(commandExecutionCoordinator,rh);
 		rh.im = this;

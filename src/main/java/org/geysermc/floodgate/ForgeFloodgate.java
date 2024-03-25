@@ -30,13 +30,13 @@ import org.geysermc.floodgate.api.logger.FloodgateLogger;
 import javax.inject.Inject;
 
 @Mod("floodgate")
-public class ForgeMod {
+public class ForgeFloodgate {
 	private static final Logger LOGGER = Logger.getLogger("floodgate");
     private FloodgatePlatform platform;
     Injector injector;
 
     @Inject
-    public ForgeMod() {
+    public ForgeFloodgate() {
     	ForgeInjector.injected = true;
         MinecraftForge.EVENT_BUS.register(this);
         System.out.println("confdir" + FMLPaths.CONFIGDIR.get().resolve("floodgate").toString());
